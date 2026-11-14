@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mission Designer — Space Apps 2026 HCMC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Be+Vietnam+Pro:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ============ HEADER ============ -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-icon">🚀</span>
+      <div>
+        <h1 data-i18n="title">THIẾT KẾ NHIỆM VỤ KHÔNG GIAN</h1>
+        <div class="subtitle" data-i18n="subtitle">JPL CML 2 ↔ 3 ↔ 4 · Space Apps 2026 HCMC</div>
+      </div>
+    </div>
+
+    <div class="mission-settings">
+      <label>
+        <span data-i18n="missionTarget">Mục tiêu</span>
+        <select id="missionSelect"></select>
+      </label>
+      <label>
+        <span data-i18n="lifetime">Tuổi thọ nhiệm vụ</span>
+        <input type="range" id="lifetimeSlider" min="6" max="36" step="6" />
+        <b id="lifetimeValue"></b>
+      </label>
+    </div>
+
+    <div class="budget-box">
+      <div class="budget-head">
+        <span data-i18n="budget">Ngân sách</span>
+        <b id="budgetText"></b>
+      </div>
+      <div class="budget-bar" id="budgetBar">
+        <div class="seg seg-lv" id="segLV"></div>
+        <div class="seg seg-sc" id="segSC"></div>
+        <div class="seg seg-ops" id="segOps"></div>
+      </div>
+      <div class="budget-legend" id="budgetLegend"></div>
+    </div>
+
+    <button class="lang-toggle" id="langToggle" title="Language">VI | EN</button>
+  </header>
+
+  <!-- ============ TABS ============ -->
+  <nav class="tabs">
+    <button class="tab active" data-tab="lv"><span class="tab-num">1</span> <span data-i18n="tabLV">Tên lửa đẩy</span> <span class="tab-dot" id="dotLV"></span></button>
+    <button class="tab" data-tab="sc"><span class="tab-num">2</span> <span data-i18n="tabSC">Tàu vũ trụ</span> <span class="tab-dot" id="dotSC"></span></button>
+    <div class="tab-hint" data-i18n="tabHint">↔ Chuyển qua lại giữa 2 phần để cân bằng trade-off</div>
+  </nav>
+
+  <!-- ============ MAIN ============ -->
+  <main class="layout">
+    <!-- LEFT: inventory -->
+    <section class="inventory" id="inventory"></section>
+
+    <!-- CENTER: canvas + stats -->
+    <section class="viewport">
+      <div class="canvas-wrap">
+        <canvas id="mainCanvas" width="560" height="640"></canvas>
+      </div>
+      <div class="stats" id="stats"></div>
+    </section>
+
+    <!-- RIGHT: checklist + advisor -->
+    <aside class="sidebar">
+      <div class="panel">
+        <h2 data-i18n="checklistTitle">CML 4 / KDP — Bảng kiểm sẵn sàng</h2>
+        <ul class="checklist" id="checklist"></ul>
+        <div class="gate-summary" id="gateSummary"></div>
+        <button class="launch-btn" id="launchBtn" disabled data-i18n="launchBtn">PROCEED TO LAUNCH</button>
+      </div>
+      <div class="panel advisor">
+        <h2><span class="advisor-face">👩‍🚀</span> <span data-i18n="advisorTitle">Kỹ sư hệ thống tư vấn</span></h2>
+        <div id="advisor"></div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- ============ LAUNCH / REPORT MODAL ============ -->
+  <div class="modal hidden" id="modal">
+    <div class="modal-box">
+      <canvas id="launchCanvas" width="480" height="360"></canvas>
+      <div id="report"></div>
+      <button class="close-btn" id="closeModal" data-i18n="close">Đóng</button>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
