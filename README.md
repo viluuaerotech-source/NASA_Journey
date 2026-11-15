@@ -8,6 +8,8 @@ Built for **NASA Space Apps Challenge 2026 – Ho Chi Minh City**.
 
 Plain HTML, CSS and JavaScript.
 
+If you just enjoy the game here is the link for you. Good Luck! : https://viluuaerotech-source.github.io/NASA_Journey/
+
 ## How the game works
 
 | Phase | What you do |
