@@ -44,7 +44,7 @@ const B=defs.map(([n,a,r,rs,f,nf,sp],i)=>{const b={n,a,r,rs,f,nf,sp,ph:i*2.4+1,o
 const SUN=B[0],EARTH=B[3],MOON=B[9];
 const ST=Array.from({length:260},()=>({x:Math.random(),y:Math.random(),l:Math.random()*3|0,p:Math.random()*6}));
 let AC,mute=false;
-function beep(f,d,f2){if(mute)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const n=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();o.type='square';o.frequency.setValueAtTime(f,n);if(f2)o.frequency.setValueAtTime(f2,n+d/2);g.gain.setValueAtTime(.04,n);g.gain.exponentialRampToValueAtTime(.0001,n+d);o.connect(g);g.connect(AC.destination);o.start(n);o.stop(n+d)}catch(e){}}
+function beep(f,d,f2){if(mute||(window.GameAudio&&!GameAudio.sfxOn()))return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const n=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();o.type='square';o.frequency.setValueAtTime(f,n);if(f2)o.frequency.setValueAtTime(f2,n+d/2);g.gain.setValueAtTime(.04,n);g.gain.exponentialRampToValueAtTime(.0001,n+d);o.connect(g);g.connect(AC.destination);o.start(n);o.stop(n+d)}catch(e){}}
 // ---- Opening sequence ----
 const INTRO={on:true,t0:null,T:0,nb:.2,last:{}},ease=p=>1-Math.pow(1-p,3),cl=(v,a,b)=>Math.min(b,Math.max(a,v));
 const sfx=(f,d,f2)=>{if(AC&&AC.state=='running')beep(f,d,f2)};

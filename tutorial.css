@@ -74,3 +74,11 @@
 
 /* replay buttons on the opening help panel get the panel's own button look */
 #opening #help #tutReplayOpening { color: #6fd0ff; border-color: #6fd0ff; }
+
+/* audio on/off controls (injected by audio.js) */
+.audio-ctl { display: inline-flex; gap: 4px; align-items: center; }
+.audio-ctl button { font: 700 10.5px "IBM Plex Mono", monospace; letter-spacing: .04em; color: #A3E635; background: #1C2536; border: 2px solid #2E3B52; padding: 3px 7px; cursor: pointer; white-space: nowrap; }
+.audio-ctl button.off { color: #8B9BB4; text-decoration: line-through; }
+.audio-ctl button:hover { border-color: #6E9BF0; }
+.audio-ctl button:focus-visible { outline: 2px solid #fff; }
+#phase1 .audio-ctl button { font-size: 14px; font-family: VT323, monospace; padding: 1px 8px; }
