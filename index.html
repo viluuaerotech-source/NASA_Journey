@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lunar Mission Designer — Space Apps 2026 HCMC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Be+Vietnam+Pro:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="opening.css" />
+</head>
+<body>
+
+<!-- =====================================================================
+     OPENING — startup menu (solar-system intro → Moon → missions → hangar)
+     ===================================================================== -->
+<div id="opening" class="intro">
+<canvas id="c"></canvas>
+<div id="title" class="intro"><b><svg width="18" height="20" viewBox="0 0 9 10" shape-rendering="crispEdges" aria-hidden="true"><path fill="#e5432f" d="M4 0h1v1H4zM3 1h3v1H3zM2 5h1v1H2zM6 5h1v1H6zM1 6h2v1H1zM6 6h2v1H6zM1 7h1v1H1zM7 7h1v1H7z"/><path fill="#fff" d="M3 2h3v5H3z"/><path fill="#6fd0ff" d="M4 3h1v1H4z"/><path fill="#999" d="M3 7h3v1H3z"/><path fill="#ff9d1c" d="M3 8h3v1H3z"/><path fill="#ffd23f" d="M4 9h1v1H4z"/></svg>HKG</b><i>Explore. Learn. Launch.</i></div>
+<aside id="hint" class="panel hid"><p>Choose your favorite Target</p></aside>
+<div id="surf"><div id="win"><div id="stage"><canvas id="core" aria-hidden="true"></canvas><canvas id="big" aria-hidden="true"></canvas><canvas id="big2" aria-hidden="true"></canvas><canvas id="ice" aria-hidden="true"></canvas></div></div><div id="lg"></div><div id="hs"></div></div>
+<div id="lcol" class="col">
+<aside class="panel"><h2>Briefing</h2><p id="st"></p></aside>
+<aside id="gimg" class="panel"><h2>Gravity map</h2><img id="gm" alt="NASA GRAIL gravity map of the Moon" referrerpolicy="no-referrer" src="https://assets.science.nasa.gov/content/dam/science/psd/lunar-science/2023/08/711377main_grail20121205_4x3_full.jpg" onerror="this.outerHTML='<p class=&quot;dim&quot;>Image unavailable (internet needed)</p>'"><p class="dim cap">NASA GRAIL gravity map</p></aside>
+<aside id="mimg" class="panel">
+  <h2>Magnetic field</h2>
+  <img id="mg" alt="Magnetic field strength of the Moon at 30 km altitude" referrerpolicy="no-referrer" src="https://www.researchgate.net/profile/Ian-Crawford-2/publication/267454477/figure/fig8/AS:295647354867719@1447499230649/Lunar-magnetic-anomalies-found-i-n-the-Moons-farside-southern-hemisphere-left-and_W640.jpg" onerror="this.outerHTML='<p class=&quot;dim&quot;>Image unavailable (internet needed, or the source blocks it)</p>'">
+  <p class="dim cap">Magnetic field strength of the Moon at 30 km altitude</p>
+</aside>
+</div>
+<div id="rcol" class="col">
+<aside id="bf" class="panel"><h2>Mission brief</h2><div id="bb"></div></aside>
+<aside id="ip" class="panel"><h2>Information</h2><h3>Tasks</h3><div id="tk"></div><h3>Requirements</h3><div id="rq"></div><h3>Difficulty</h3><div id="gg"></div></aside>
+<aside id="mn" class="panel"><h2>Minerals</h2><div id="mi"></div></aside>
+</div>
+<button id="start" disabled>Start Missions</button>
+<aside id="mpop" class="panel hid" role="dialog" aria-label="Mission details"><button id="mx" aria-label="Close">×</button><div id="mpb"></div></aside>
+<aside id="det" class="panel hid"><h2 id="dn"></h2><canvas id="th" width="130" height="64"></canvas><div id="db"></div><button id="go" class="opt">Continue to Missions ▸</button></aside>
+<button id="back">◂ Back</button>
+<div id="help"><h3>Instructions</h3>Drag the mouse to move around.<br>Scroll to zoom in and out.<br>Click a planet or the Moon to select a target.
+<div><button id="zi" aria-label="Zoom in">+</button><button id="zo" aria-label="Zoom out">−</button><button id="zr">Reset</button><button id="sd">Sound: on</button><button id="tutReplayOpening">Tutorial</button></div></div>
+<div id="tip"></div>
+<div id="typed"></div><div id="sub"></div>
+<div id="prompt">Select a destination <span>✦</span></div>
+<div id="introui"><span id="snd" hidden>Click anywhere to enable sound</span><button id="skip">Skip ▸</button></div>
+</div>
+
+<!-- =====================================================================
+     PHASE 1 — LAUNCH VEHICLE & SPACECRAFT DESIGN HANGAR
+     ===================================================================== -->
+<div id="phase1" class="screen">
+  <header class="topbar">
+    <div class="brand">
+      <canvas id="brandIcon" width="16" height="16"></canvas>
+      <div>
+        <h1>SPACE MISSION DESIGNER</h1>
+        <div class="subtitle">JPL CML 2 ↔ 3 ↔ 4 · Space Apps 2026 HCMC</div>
+      </div>
+    </div>
+
+    <div class="mission-settings">
+      <button id="btnMissions" class="btn-missions" title="Back to mission selection">◂ MISSIONS <span id="missionCount"></span></button>
+      <button id="btnHangarTut" class="btn-missions" title="Replay the hangar tutorial">? TUTORIAL</button>
+      <label>
+        <span>Target</span>
+        <select id="missionSelect"></select>
+      </label>
+    </div>
+
+    <div class="budget-box">
+      <div class="budget-head">
+        <span>Budget</span>
+        <b id="budgetText"></b>
+      </div>
+      <div class="budget-bar" id="budgetBar">
+        <div class="seg seg-lv" id="segLV"></div>
+        <div class="seg seg-sc" id="segSC"></div>
+        <div class="seg seg-ops" id="segOps"></div>
+      </div>
+      <div class="budget-legend" id="budgetLegend"></div>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="lv"><span class="tab-num">1</span> <span>Launch Vehicle</span> <span class="tab-dot" id="dotLV"></span></button>
+    <button class="tab" data-tab="sc"><span class="tab-num">2</span> <span>Spacecraft</span> <span class="tab-dot" id="dotSC"></span></button>
+    <div class="tab-hint">↔ Switch between both parts to balance trade-offs</div>
+  </nav>
+
+  <main class="layout">
+    <section class="inventory" id="inventory"></section>
+
+    <section class="viewport">
+      <div class="canvas-wrap">
+        <canvas id="mainCanvas" width="560" height="640"></canvas>
+      </div>
+      <div class="stats" id="stats"></div>
+    </section>
+
+    <aside class="sidebar">
+      <div class="side-panel">
+        <h2>CML 4 / KDP Readiness Checklist</h2>
+        <ul class="checklist" id="checklist"></ul>
+        <div class="gate-summary" id="gateSummary"></div>
+        <button class="launch-btn" id="launchBtn" disabled>PROCEED TO LAUNCH</button>
+      </div>
+      <div class="side-panel advisor">
+        <h2><span class="se-badge">SYS ENG</span> <span>Systems Engineer Advisor</span></h2>
+        <div id="advisor"></div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Part inspector: slide-out drawer (opened by [i]); the blueprint stays visible -->
+  <aside id="infoDrawer" class="info-drawer" role="dialog" aria-label="Part inspector" aria-hidden="true"></aside>
+</div>
+
+<!-- =====================================================================
+     LAUNCH TRANSITION (Phase 1 → Phase 2)
+     ===================================================================== -->
+<div id="launchFx" class="hidden">
+  <canvas id="launchFxCanvas"></canvas>
+</div>
+
+<!-- =====================================================================
+     PHASE 2 — ORBIT & FLY (GMAT 2D, 1:1 Earth–Moon scale)
+     ===================================================================== -->
+<div id="phase2" class="screen hidden">
+    <!-- Full-Viewport Spaceflight Simulation Canvas -->
+    <canvas id="simCanvas"></canvas>
+
+    <!-- Minimalist NASA Mission Control HUD Overlay -->
+    <div id="hudRoot">
+      <!-- 2D attitude dial (KSP-navball style, honest 2D): sky/ground disc, rim markers, nose needle, hold buttons -->
+      <div id="attDial" class="att-dial" aria-label="Attitude dial">
+        <button id="dialSpeed" class="dial-speed" type="button" title="Click: orbit / surface speed">ORBIT 0.00 km/s</button>
+        <div class="dial-mid">
+          <div class="dial-thr" title="Throttle"><div id="dialThrFill"></div></div>
+          <canvas id="dialCanvas" width="88" height="88"></canvas>
+          <div class="dial-side mono"><b id="dialBody">EARTH</b><span id="dialStage">STG 1/5</span><span id="dialG">1.0 G</span><span id="dialPe">PE --</span><span id="dialAp">AP --</span></div>
+        </div>
+        <div class="dial-holds" id="dialHolds">
+          <button type="button" data-hold="guide" title="Auto-aim follows the guidance target ▼">▼ GUIDE</button>
+          <button type="button" data-hold="pro" title="Hold prograde: speeds you up">⊕ PRO</button>
+          <button type="button" data-hold="retro" title="Hold retrograde: slows you down">⊗ RETRO</button>
+          <button type="button" data-hold="rout" title="Hold radial-out: away from the body">⊙ R-OUT</button>
+          <button type="button" data-hold="rin" title="Hold radial-in: toward the body">⦿ R-IN</button>
+          <button type="button" data-hold="free" title="Auto-aim off: steer with A / D">✋ FREE</button>
+        </div>
+      </div>
+
+      <!-- Top Mission Status & Time/View Control Bar -->
+      <header class="hud-topbar panel">
+        <div class="mission-id">
+          <span class="status-led" id="missionLed"></span>
+          <canvas id="craftThumb" class="craft-thumb" width="34" height="34" title="Your spacecraft"></canvas>
+          <div>
+            <div class="title-row">
+              <span class="agency-tag">NASA DISCOVERY-03 // GMAT 2D</span>
+              <h1>LUNAR PROSPECTOR</h1>
+            </div>
+            <div class="sub-telemetry mono">
+              <span>MET: <strong id="hudMet">T+ 00:00:00</strong></span>
+              <span class="sep">|</span>
+              <span>PHASE: <strong id="hudStageLabel" class="cyan">STAGE 1 · LAUNCH &amp; TLI</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="topbar-controls">
+          <!-- Stage Retry, Stage Jump & Tutorial -->
+          <div class="ctrl-group">
+            <span class="ctrl-label">MISSION STAGE &amp; HELP</span>
+            <div class="btn-row">
+              <button id="btnFlightSchool" class="hud-btn" title="Flight school: controls, views, telemetry">🎓 FLIGHT SCHOOL</button>
+              <button id="btnTutorial" class="hud-btn" title="Open the pilot briefing [T]">? BRIEFING [T]</button>
+              <button id="btnPause" class="hud-btn" title="Key [P]">PAUSE</button>
+              <button id="btnRetryStage" class="hud-btn warn-outline" title="Retry the current stage from your last checkpoint [R]">[R] RETRY</button>
+              <button id="btnResetNominal" class="hud-btn" title="Reset current stage to stock clean NASA nominal state">NOMINAL</button>
+              <select id="stageJumpSelect" class="hud-select" title="Jump to Mission Stage">
+                <option value="1">Stage 1: Launch &amp; TLI</option>
+                <option value="2">Stage 2: Course Correction</option>
+                <option value="3">Stage 3: Lunar Orbit Insertion</option>
+                <option value="4">Stage 4: South Pole Impact</option>
+              </select>
+              <button id="btnHangar" class="hud-btn" title="Back to the hangar to redesign">◀ HANGAR</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <button id="cleanViewChip" class="clean-chip hidden" type="button" title="Show the HUD again [H]">CLEAN VIEW · [H] SHOW HUD</button>
+      <!-- Center-Top KSP Altimeter + Auto-Guidance Burn Bar & Critical Alerts -->
+      <div class="center-banners">
+        <!-- KSP-Style Digital Altimeter & Vertical Speed Tape -->
+        <div id="kspAltimeter" class="panel ksp-altimeter">
+          <div class="ksp-alt-top">
+            <span id="kspAltBody" class="ksp-body-tag cyan">EARTH</span>
+            <div class="ksp-tumbler mono" id="kspAltValue">000,000.0 <small>km</small></div>
+            <span id="kspAtmoBadge" class="ksp-atmo-tag">ATMO · 100 km KARMAN</span>
+          </div>
+          <div class="ksp-alt-sub mono">
+            <span>V<sub>VERT</sub>: <strong id="kspVertSpeed">+0.0 m/s</strong></span>
+            <span>APOAPSIS: <strong id="kspApoReadout" class="cyan">-- km</strong></span>
+            <span>PERIAPSIS: <strong id="kspPeriReadout" class="amber">-- km</strong></span>
+          </div>
+        </div>
+
+        <div id="fidoDirectiveBox" class="panel directive-box">
+          <div class="directive-head">
+            <span class="tag-fido">AUTO-GUIDANCE</span>
+            <span id="fidoWindowBadge" class="badge-when">WHEN: LAUNCH READY</span>
+            <span id="fidoPitchBadge" class="badge-pitch">TARGET: --°</span>
+            <span id="fidoBurnBadge" class="badge-burn">BURN Δv: -- m/s</span>
+            <span id="fidoWarpBadge" class="badge-burn hidden">BURN WARP 1x</span>
+          </div>
+          <div id="fidoDirectiveText" class="directive-text">
+            PRESS [SPACE] (ENGINE ON) TO LAUNCH INTO 185 KM EARTH PARKING ORBIT
+          </div>
+          <div id="fidoCutoffStatus" class="directive-cutoff mono hidden"></div>
+          <div class="burn-progress-track">
+            <div id="barBurnProgress" class="burn-progress-fill" style="width: 100%"></div>
+          </div>
+        </div>
+
+        <!-- Stage 2 Spin-Phase Pulse Rhythm Bar -->
+        <div id="rhythmBarBox" class="panel rhythm-bar-box hidden">
+          <div class="rhythm-head mono">
+            <span class="tag-fido">SPIN-PHASE RCS PULSE [C]</span>
+            <span id="rhythmZoneBadge" class="badge-when">ROTATING</span>
+            <span id="rhythmErrReadout" class="badge-burn">CORRIDOR: -- km</span>
+          </div>
+          <div class="rhythm-track">
+            <div class="rhythm-gold-zone"><span>GOLD PULSE ZONE</span></div>
+            <div id="rhythmCursor" class="rhythm-cursor" style="left: 50%"></div>
+          </div>
+          <div id="rhythmHintText" class="rhythm-hint mono">
+            AIM FOR GREEN CORRIDOR (35-240 KM PERILUNE) · PRESS [SPACE] TO TOGGLE ENGINE (+ [A]/[D] STEER) OR TAP IN GOLD ZONE
+          </div>
+        </div>
+
+        <!-- Out-of-propellant choice (non-blocking: the craft keeps coasting) -->
+        <div id="fuelOutPrompt" class="panel fuel-prompt hidden" role="alertdialog" aria-live="assertive">
+          <div id="fuelOutText" class="fuel-prompt-text mono">PROPELLANT DEPLETED · SPACECRAFT IS COASTING</div>
+          <div class="fuel-prompt-actions">
+            <button id="btnFuelAbort" class="hud-btn danger-btn">ABORT MISSION</button>
+            <button id="btnFuelDrift" class="hud-btn active">CONTINUE DRIFTING</button>
+          </div>
+        </div>
+
+        <!-- Manual Stage Separation Prompt -->
+        <div id="stagingPromptBanner" class="alert-banner alert-staging hidden">
+          BOOSTER DEPLETED · PRESS [G] TO SEPARATE STAGE!
+        </div>
+
+        <!-- Stage 3 Minimum Lunar Operating Floor Warning (< 25 km) -->
+        <div id="terrainHazardBanner" class="alert-banner alert-terrain hidden">
+          LOW LUNAR FLOOR (&lt; 25 KM) · TERRAIN &amp; MASCON HAZARD (HIGHLANDS UP TO 10.7 KM)
+        </div>
+
+        <!-- Stage 3 Farside Blackout Warning -->
+        <div id="blackoutBanner" class="alert-banner alert-blackout hidden">
+          FARSIDE BLACKOUT - BUFFERING
+        </div>
+
+        <!-- Stage 4 End of Mission Banner -->
+        <div id="impactCorridorBanner" class="alert-banner alert-impact hidden">
+          END OF MISSION - IMPACT CORRIDOR · TARGET: SHOEMAKER CRATER (SOUTH POLE)
+        </div>
+      </div>
+
+      <!-- Left Telemetry Column: Propulsion, Attitude & Orbital Mechanics -->
+      <aside class="hud-col hud-left">
+        <!-- Propulsion & Mass Management -->
+        <section class="panel card-block">
+          <div class="card-title">
+            <span>PROPULSION &amp; Δv BUDGET</span>
+            <span id="activeStageBadge" class="pill cyan">STAGE 1 BOOSTER</span>
+          </div>
+
+          <div class="metric-row big-metric">
+            <span class="lbl">REMAINING Δv</span>
+            <span id="hudDeltaV" class="val mono amber">14,200 m/s</span>
+          </div>
+
+          <div id="dynamicStageBars" class="stage-bars-container">
+            <div class="bar-group">
+              <div class="bar-label">
+                <span>STAGE 1 BOOSTER</span>
+                <span id="hudS1FuelPct" class="mono">100.0%</span>
+              </div>
+              <div class="progress-track">
+                <div id="barS1Fuel" class="progress-fill cyan" style="width: 100%"></div>
+              </div>
+            </div>
+
+            <div class="bar-group">
+              <div class="bar-label">
+                <span>ORBITAL BUS (PROSPECTOR)</span>
+                <span id="hudS2FuelPct" class="mono">100.0%</span>
+              </div>
+              <div class="progress-track">
+                <div id="barS2Fuel" class="progress-fill amber" style="width: 100%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="metric-grid mono">
+            <div class="kv"><span class="k">MASS:</span><span id="hudMass" class="v">35,000 kg</span></div>
+            <div class="kv"><span class="k">THRUST:</span><span id="hudThrustState" class="v">IDLE</span></div>
+          </div>
+          <div class="hidden">
+            <span id="hudTrimMode">CONTINUOUS</span>
+            <span id="hudSpinRate">0.0 RPM</span>
+          </div>
+        </section>
+
+        <!-- Attitude & Guidance Heading Comparison -->
+        <section class="panel card-block">
+          <div class="card-title">
+            <span>ATTITUDE &amp; GUIDANCE</span>
+            <span id="hudAlignStatus" class="pill">ALIGNING</span>
+          </div>
+
+          <div class="heading-compare mono">
+            <div class="hdg-box">
+              <span class="k">YOUR NOSE</span>
+              <span id="hudScHeading" class="hdg-val">000.0°</span>
+            </div>
+            <div class="hdg-arrow" id="hudTurnCue">◀ [A] / [D] ▶</div>
+            <div class="hdg-box">
+              <span class="k">TARGET ANGLE</span>
+              <span id="hudTargetHeading" class="hdg-val cyan">000.0°</span>
+            </div>
+          </div>
+
+          <div class="metric-grid mono">
+            <div class="kv"><span class="k">HDG ERROR:</span><span id="hudHeadingErr" class="v">0.0°</span></div>
+            <div class="kv"><span class="k">VEL:</span><span id="hudVel" class="v">0.47 km/s</span></div>
+            <div class="kv"><span class="k">DIST (LUNA):</span><span id="hudDistMoon" class="v">120,000 km</span></div>
+            <div class="kv"><span class="k">PRED PERILUNE:</span><span id="hudPredPeri" class="v cyan">--</span></div>
+          </div>
+        </section>
+      </aside>
+
+      <!-- Right Telemetry Column: DSN Communications, Science Buffer & Controls -->
+      <aside class="hud-col hud-right">
+        <section id="dsnCardBlock" class="panel card-block">
+          <div class="card-title">
+            <span>DEEP SPACE NETWORK (DSN)</span>
+            <span id="hudDsnPill" class="pill green">DSN LOCK</span>
+          </div>
+
+          <div class="dsn-status-row mono">
+            <span class="k">EARTH COMMS:</span>
+            <span id="hudDsnStatus" class="v green">DSN LOCK · GOLDSTONE</span>
+          </div>
+
+          <div class="bar-group hidden">
+            <div class="bar-label">
+              <span>SCIENCE MEMORY BUFFER</span>
+              <span id="hudBufferPct" class="mono">0.0%</span>
+            </div>
+            <div class="progress-track">
+              <div id="barBuffer" class="progress-fill cyan" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <div class="bar-group hidden">
+            <div class="bar-label">
+              <span>SCIENCE SCORE (MISSION DATA)</span>
+              <span id="hudScorePct" class="mono green">0.0%</span>
+            </div>
+            <div class="progress-track">
+              <div id="barScore" class="progress-fill green" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <button id="btnDownlink" class="hud-btn downlink-btn hidden" disabled>
+            [E] DOWNLINK DATA
+          </button>
+          <div id="downlinkHint" class="downlink-hint mono hidden">
+            Available in Stage 3 after entering Lunar Orbit (near side of Moon).
+          </div>
+        </section>
+
+        <!-- Mission Flight Plan (click to collapse, like Flight Controls) -->
+        <details id="flightPlanDrawer" class="panel key-guide gmat-drawer">
+          <summary class="guide-title drawer-summary">MISSION FLIGHT PLAN ▾ <span id="hudScaleReadout" class="mono muted">7.5 km/px</span></summary>
+          <ul class="flight-plan mono drawer-body" id="flightPlanList">
+            <li data-step="1a" class="active">1A. Launch to 185 km Parking Orbit [SPACE]</li>
+            <li data-step="1b">1B. Separate Each Empty Stage [G]</li>
+            <li data-step="1c">1C. TLI Burn along the Cyan Trajectory</li>
+            <li data-step="2">2. Course Correction along the Live Cyan Path</li>
+            <li data-step="3a">3A. Brake into the Green Lunar Science Orbit</li>
+            <li data-step="3b">3B. Lunar Survey (Phase 3) · one full orbit</li>
+            <li data-step="4">4. South Pole Dive (Shoemaker Crater)</li>
+          </ul>
+        </details>
+
+        <!-- Collapsible Keyboard Control Guide (Collapsed by default inside Right Column) -->
+        <details id="flightControlsDrawer" class="panel key-guide gmat-drawer">
+          <summary class="guide-title drawer-summary">FLIGHT CONTROLS ▾</summary>
+          <div class="guide-grid mono drawer-body">
+            <div><kbd>SPACE</kbd> Engine ON/OFF (toggle) · <kbd>SHIFT+SPACE</kbd> 25% while held</div>
+            <div><kbd>A</kbd> <kbd>D</kbd> Rotate Nose · <kbd>S</kbd> SAS · <kbd>Q</kbd> Auto-Aim</div>
+            <div><kbd>G</kbd> Separate Stage · <kbd>W</kbd> Warp To Window · <kbd>0</kbd>–<kbd>6</kbd> Warp</div>
+            <div><kbd>M</kbd> Camera · <kbd>B</kbd> Synodic (∞) Frame · <kbd>P</kbd> Pause</div>
+            <div><kbd>R</kbd> Retry · <kbd>T</kbd> Briefing · <kbd>ESC</kbd> Close panels</div>
+            <div><kbd>H</kbd> Clean view · <kbd>ENTER</kbd> Keep a usable lunar orbit · Dial buttons: hold PRO / RETRO / R-OUT / R-IN</div>
+          </div>
+        </details>
+      </aside>
+
+      <!-- Bottom-Center KSP Time-Warp, Camera & Assists Control Dock -->
+      <footer id="bottomControlBar" class="panel bottom-control-bar">
+        <div class="ctrl-group">
+          <span class="ctrl-label">TIME WARP [0-6]</span>
+          <div class="btn-row" id="warpControls">
+            <button class="hud-btn warp-btn" data-warp="0.25" title="Slow Motion 0.25x [0]">0.25x</button>
+            <button class="hud-btn warp-btn active" data-warp="1" title="Real Time [1]">1x</button>
+            <button class="hud-btn warp-btn" data-warp="5" title="Warp 5x [2]">5x</button>
+            <button class="hud-btn warp-btn" data-warp="25" title="Warp 25x [3]">25x</button>
+            <button class="hud-btn warp-btn" data-warp="100" title="Warp 100x [4]">100x</button>
+            <button class="hud-btn warp-btn" data-warp="500" title="Warp 500x [5]">500x</button>
+            <button class="hud-btn warp-btn" data-warp="1000" title="Warp 1000x [6]">1000x</button>
+            <button id="btnWarpToWindow" class="hud-btn" title="Warp to 45s before next burn window [W]">⏭ WINDOW [W]</button>
+          </div>
+        </div>
+
+        <div class="ctrl-group">
+          <span class="ctrl-label">CAMERA &amp; FRAME</span>
+          <div class="btn-row">
+            <button id="btnRocketView" class="hud-btn" title="Spaceflight Simulator Close-Up Rocket Camera">ROCKET VIEW</button>
+            <button id="btnViewToggle" class="hud-btn active" title="Cycle Rocket / Flight / Moon Lock / Map [M]">[M] FLIGHT VIEW</button>
+            <button id="btnFrameToggle" class="hud-btn" title="Switch J2000 Inertial vs Earth-Moon Synodic Co-Rotating (∞) Frame [B]">[B] J2000</button>
+            <button id="btnZoomIn" class="hud-btn icon-btn" title="Zoom In">+</button>
+            <button id="btnZoomOut" class="hud-btn icon-btn" title="Zoom Out">&minus;</button>
+          </div>
+        </div>
+
+        <div class="ctrl-group">
+          <span class="ctrl-label">FLIGHT ASSISTS</span>
+          <div class="btn-row">
+            <button id="btnAutoAim" class="hud-btn active" title="Auto-align spacecraft nose to the guidance target [Q]">[Q] AUTO-AIM: ON</button>
+            <button id="btnSasToggle" class="hud-btn active" title="Rotational stability assist (damps spin) [S]">[S] SAS: ON</button>
+            <button id="btnCleanView" class="hud-btn" title="Hide the HUD for a clean view [H]">[H] CLEAN VIEW</button>
+          </div>
+        </div>
+      </footer>
+
+      <!-- Modal Overlay for Mission Abort or Mission Accomplished -->
+      <div id="missionModal" class="modal-backdrop hidden">
+        <div class="panel modal-card">
+          <div id="modalBadge" class="modal-badge">MISSION STATUS</div>
+          <h2 id="modalTitle">LUNAR PROSPECTOR</h2>
+          <p id="modalBody" class="modal-body"></p>
+          <div id="modalStats" class="modal-stats mono"></div>
+          <div class="modal-actions">
+            <button id="btnModalRetryStage" class="hud-btn active">[R] RETRY CURRENT STAGE</button>
+            <button id="btnModalRestartAll" class="hud-btn">RESTART FLIGHT</button>
+            <button id="btnModalHangar" class="hud-btn">◀ BACK TO HANGAR</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Mission Tutorial Modal -->
+      <div id="tutorialModal" class="modal-backdrop hidden">
+        <div class="panel modal-card tutorial-card">
+          <div class="modal-badge">PILOT BRIEFING &amp; TUTORIAL</div>
+          <h2>HOW TO FLY YOUR SPACECRAFT</h2>
+          <div class="tut-tabs" id="tutTabs">
+            <button class="hud-btn active" data-tut="overview">1. Overview &amp; Lines</button>
+            <button class="hud-btn" data-tut="stage12">2. Stages 1 &amp; 2</button>
+            <button class="hud-btn" data-tut="stage34">3. Stages 3 &amp; 4</button>
+            <button class="hud-btn" data-tut="tips">4. Camera &amp; Assists</button>
+          </div>
+          <div id="tutContent" class="tut-content"></div>
+          <div class="modal-actions">
+            <button id="btnTutClose" class="hud-btn active">CLOSE &amp; FLY [T]</button>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+</div>
+
+<script src="physics.js"></script>
+<script src="planets.js"></script>
+<script src="hangar.js"></script>
+<script src="flight.js"></script>
+<script src="phase3.js"></script>
+<script src="tutorial.js"></script>
+<script src="opening.js"></script>
+</body>
+</html>

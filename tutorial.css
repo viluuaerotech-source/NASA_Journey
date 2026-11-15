@@ -1,0 +1,76 @@
+/* =====================================================================
+   TUTORIALS — spotlight coach (1–3) + pop-up schools (4–5)
+   ===================================================================== */
+.tut-root { position: fixed; inset: 0; z-index: 9000; pointer-events: none; font-family: "Be Vietnam Pro", system-ui, sans-serif; }
+.tut-dim { position: fixed; inset: 0; background: rgba(4, 7, 14, .74); pointer-events: auto; display: none; }
+.tut-block { position: fixed; pointer-events: auto; background: transparent; }
+.tut-spot {
+  position: fixed; pointer-events: none; border: 3px solid #F0A030;
+  box-shadow: 0 0 0 200vmax rgba(4, 7, 14, .74), 0 0 18px 4px rgba(240, 160, 48, .75), inset 0 0 12px rgba(240, 160, 48, .45);
+  animation: tutGlow 1s steps(2) infinite;
+}
+.tut-spot.round { border-radius: 50%; }
+@keyframes tutGlow { 50% { border-color: #FDE047; box-shadow: 0 0 0 200vmax rgba(4, 7, 14, .74), 0 0 26px 8px rgba(253, 224, 71, .8), inset 0 0 14px rgba(253, 224, 71, .5); } }
+.tut-proxy { position: fixed; pointer-events: auto; background: transparent; border: 0; cursor: pointer; border-radius: 50%; }
+.tut-proxy:focus-visible { outline: 2px solid #fff; }
+.tut-arrow { position: fixed; width: 0; height: 0; pointer-events: none; transform-origin: 0 0; transform: rotate(var(--rot, 0deg)); }
+.tut-arrow i {
+  position: absolute; left: -12px; top: 4px; width: 0; height: 0; display: block;
+  border-left: 12px solid transparent; border-right: 12px solid transparent; border-bottom: 15px solid #FDE047;
+  filter: drop-shadow(2px 2px 0 #05070C); animation: tutBob .7s steps(2) infinite;
+}
+.tut-arrow i::after { content: ""; position: absolute; left: -4px; top: 15px; width: 8px; height: 14px; background: #FDE047; }
+@keyframes tutBob { 50% { transform: translateY(7px); } }
+.tut-bubble {
+  position: fixed; pointer-events: auto; width: min(360px, calc(100vw - 24px)); padding: 12px 14px 10px;
+  background: #131A26; color: #E2E8F0; border: 2px solid #F0A030; box-shadow: 4px 4px 0 #05070C, 0 0 0 2px #05070C;
+  font-size: 13.5px; line-height: 1.5;
+}
+.tut-bubble.pop { animation: tutPop .25s steps(4); }
+@keyframes tutPop { from { transform: scale(.92); opacity: .2; } }
+.tut-kick, .tut-wroot .tut-kick { font: 700 9.5px "IBM Plex Mono", monospace; letter-spacing: .12em; color: #6E9BF0; }
+.tut-bubble h3 { margin: 3px 0 5px; font: 400 23px/1.05 VT323, monospace; color: #F0A030; letter-spacing: .02em; }
+.tut-text b, .tut-wcopy b { color: #fff; }
+.tut-text i { color: #8B9BB4; }
+.tut-do { margin-top: 8px; padding: 5px 8px; font: 700 12px "IBM Plex Mono", monospace; color: #0A0E17; background: #FDE047; animation: tutDo 1s steps(2) infinite; }
+@keyframes tutDo { 50% { background: #F0A030; } }
+.tut-now { margin-top: 7px; padding: 5px 8px; background: #0A0E17; border-left: 3px solid #44557A; font: 12px "IBM Plex Mono", monospace; color: #8B9BB4; }
+.tut-g { color: #3CC46B !important; } .tut-y { color: #F0A030 !important; } .tut-r { color: #F05A5A !important; }
+.tut-diff { margin: 6px 0; padding-left: 18px; font: 11.5px/1.5 "IBM Plex Mono", monospace; }
+.tut-btns { display: flex; align-items: center; gap: 6px; margin-top: 10px; }
+.tut-grow { flex: 1; }
+.tut-btns button, .tut-wfoot button {
+  font: 700 11px "IBM Plex Mono", monospace; color: #E2E8F0; background: #1C2536; border: 2px solid #2E3B52; padding: 4px 9px; cursor: pointer;
+}
+.tut-btns button:hover, .tut-wfoot button:hover:not(:disabled) { border-color: #6E9BF0; }
+.tut-btns .tut-next, .tut-wfoot .tut-wnext { color: #0A0E17; background: #F0A030; border-color: #FDE047; }
+.tut-btns .tut-skip, .tut-btns .tut-off { color: #8B9BB4; background: transparent; border-color: transparent; padding: 4px 3px; font-weight: 400; text-decoration: underline; }
+.tut-btns button:focus-visible, .tut-wfoot button:focus-visible, .tut-wclose:focus-visible { outline: 2px solid #fff; }
+
+/* pop-up schools */
+.tut-wroot { position: fixed; inset: 0; z-index: 9500; display: grid; place-items: center; background: rgba(4, 7, 14, .78); font-family: "Be Vietnam Pro", system-ui, sans-serif; color: #E2E8F0; }
+.tut-wcard {
+  width: min(980px, 96vw); max-height: 94vh; display: flex; flex-direction: column; gap: 10px; padding: 14px 16px;
+  background: #131A26; border: 2px solid #F0A030; box-shadow: 6px 6px 0 #05070C; animation: tutPop .25s steps(4); overflow: auto;
+}
+.tut-whead { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+.tut-whead h2 { margin: 2px 0 0; font: 400 30px/1 VT323, monospace; color: #F0A030; }
+.tut-wclose { font: 700 16px "IBM Plex Mono", monospace; color: #E2E8F0; background: #1C2536; border: 2px solid #2E3B52; width: 34px; height: 34px; cursor: pointer; }
+.tut-wbody { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 14px; align-items: start; }
+.tut-wstage { background: #0A0E17; border: 2px solid #2E3B52; }
+.tut-wstage canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; }
+.tut-wtext h3 { margin: 0 0 6px; font: 400 25px/1.05 VT323, monospace; color: #E2E8F0; }
+.tut-wcopy { font-size: 14px; line-height: 1.55; }
+.tut-wcopy p { margin: 0 0 8px; } .tut-wcopy ul, .tut-wcopy ol { margin: 0 0 8px; padding-left: 20px; } .tut-wcopy li { margin-bottom: 4px; }
+.tut-wroot kbd, .tut-bubble kbd { font: 700 11px "IBM Plex Mono", monospace; padding: 0 5px; color: #0A0E17; background: #E2E8F0; box-shadow: 0 2px 0 #44557A; }
+.tut-wfoot { display: flex; align-items: center; gap: 8px; }
+.tut-wfoot button:disabled { opacity: .35; cursor: default; }
+.tut-dots { display: flex; gap: 6px; }
+.tut-dots button { width: 14px; height: 14px; padding: 0; background: #1C2536; border: 2px solid #44557A; cursor: pointer; }
+.tut-dots button.on { background: #F0A030; border-color: #FDE047; }
+.tut-pink { color: #E879F9; } .tut-cyan { color: #22D3EE; } .tut-amber { color: #F0A030; } .tut-green { color: #3CC46B; } .tut-red { color: #F05A5A; } .tut-blue { color: #6E9BF0; } .tut-yellow { color: #E8D27A; }
+@media (max-width: 780px) { .tut-wbody { grid-template-columns: 1fr; } }
+@media (max-height: 640px) { .tut-wcopy { font-size: 13px; } .tut-whead h2 { font-size: 24px; } }
+
+/* replay buttons on the opening help panel get the panel's own button look */
+#opening #help #tutReplayOpening { color: #6fd0ff; border-color: #6fd0ff; }
