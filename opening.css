@@ -1,0 +1,176 @@
+/* ===== OPENING (startup menu) — scoped to #opening ===== */
+#opening{color-scheme:dark;--ink:#d6ecff;--gold:#ffd23f;--ice:#6fd0ff;--dim:#7f9ab8;--glass:rgba(8,18,44,.66);--fr:rgba(111,208,255,.8);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+#opening{height:100%;margin:0;background:#000;overflow:hidden;font:18px/1.1 'VT323',monospace;color:var(--ink)}
+#opening #c{position:fixed;inset:0;width:100%;height:100%;touch-action:none;display:block}
+#opening #th{display:block;margin:2px auto 6px;background:rgba(0,0,0,.35);image-rendering:pixelated;box-shadow:0 -2px 0 0 rgba(111,208,255,.5),0 2px 0 0 rgba(111,208,255,.5),-2px 0 0 0 rgba(111,208,255,.5),2px 0 0 0 rgba(111,208,255,.5)}
+#opening #title{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);text-align:center;pointer-events:none;opacity:0;transform-origin:50% 0;transition:top 1.2s steps(12),transform 1.2s steps(12)}
+#opening #title b{display:flex;align-items:center;justify-content:center;gap:10px;font:26px 'Press Start 2P',monospace;color:var(--gold);text-shadow:3px 3px 0 #7a4a00,0 0 8px #ff9d1c,0 0 18px rgba(255,140,0,.7);letter-spacing:4px;animation:op-boot 1.4s steps(1,end) 1}
+#opening #title svg{filter:drop-shadow(0 0 4px #ff9d1c)}
+#opening #title i{display:block;margin-top:9px;font:normal 9px 'Press Start 2P',monospace;color:var(--ice);animation:op-boot 1.4s steps(1,end) .5s backwards}
+#opening .panel{position:fixed;top:calc(92px + env(safe-area-inset-top,0px));background:var(--glass);border:0;box-shadow:0 -4px 0 0 var(--fr),0 4px 0 0 var(--fr),-4px 0 0 0 var(--fr),4px 0 0 0 var(--fr),inset 0 0 16px rgba(80,160,255,.12);padding:10px 12px;box-sizing:border-box;transition:opacity .6s,transform .6s}
+#opening #mis{left:12px;width:200px;pointer-events:none}
+#opening #det{right:12px;width:250px;max-height:calc(100% - 200px);overflow:auto;scrollbar-width:thin}
+#opening #mis.hid{opacity:0;transform:translateX(-14px)}
+#opening #det.hid{opacity:0;transform:translateX(14px);pointer-events:none}
+#opening .panel h2{font:10px 'Press Start 2P',monospace;color:var(--gold);margin:0 0 8px}
+#opening .panel h3{font:8px 'Press Start 2P',monospace;color:var(--ice);margin:12px 0 5px}
+#opening .panel p{margin:4px 0}
+#opening .y{color:var(--gold)}
+#opening .edu{color:#ffe9a0}
+#opening .dim{color:var(--dim)}
+#opening .r{display:flex;justify-content:space-between;gap:8px;padding:1px 0}
+#opening .r span:first-child{color:var(--dim)}
+#opening .r span:last-child{text-align:right}
+#opening #help{position:fixed;left:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));width:224px;background:var(--glass);border:0;box-shadow:0 -2px 0 0 var(--fr),0 2px 0 0 var(--fr),-2px 0 0 0 var(--fr),2px 0 0 0 var(--fr);padding:8px 10px;box-sizing:border-box;font-size:17px}
+#opening #help h3{font:8px 'Press Start 2P',monospace;color:var(--ice);margin:0 0 6px}
+#opening #help div{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+#opening #help button{font:16px 'VT323',monospace;color:var(--gold);background:rgba(0,0,0,.5);border:2px solid var(--gold);padding:0 8px;cursor:pointer}
+#opening #help button:focus-visible{outline:2px solid #fff}
+@media(max-width:640px){#opening #det{width:170px;font-size:16px}
+#opening #mis{width:130px}
+#opening #help{width:190px}}
+#opening #tip{position:fixed;left:0;top:0;display:none;z-index:5;pointer-events:none;white-space:nowrap;padding:5px 7px;background:#0a1230;color:var(--gold);font:8px 'Press Start 2P',monospace;box-shadow:0 -2px 0 0 var(--gold),0 2px 0 0 var(--gold),-2px 0 0 0 var(--gold),2px 0 0 0 var(--gold)}
+@keyframes op-boot{0%{opacity:0}12%{opacity:1}24%{opacity:0}36%{opacity:1}48%{opacity:.2}60%{opacity:1}100%{opacity:1}}
+@media(prefers-reduced-motion:reduce){#opening #title b,#opening #title i{animation:none}}
+#opening #title i{opacity:0;transition:opacity 1s}
+#opening #title.fin i{opacity:1}
+#opening #title.intro{top:34vh;transform:translateX(-50%) scale(2.8)}
+#opening #title.intro b{text-shadow:3px 3px 0 #7a4a00,0 0 14px #ff9d1c,0 0 34px rgba(255,157,28,.6);animation:op-glow 1.2s steps(4) infinite alternate}
+@keyframes op-glow{to{filter:brightness(1.4)}}
+@keyframes op-drop{from{translate:0 -90px;opacity:0}to{translate:0 0;opacity:1}}
+#opening #title.drop{animation:op-drop .9s steps(6) both}
+#opening #title.skip{animation:none;opacity:1}
+#opening #typed,#opening #sub{position:fixed;left:50%;transform:translateX(-50%);width:90vw;text-align:center;font:11px/1.6 'Press Start 2P',monospace;pointer-events:none;text-shadow:0 0 6px #000,2px 2px 0 #000;transition:opacity 1.2s steps(6)}
+#opening #typed{bottom:20%;color:var(--ice)}
+#opening #sub{top:calc(34vh + 110px);color:#ffe9a8;font-size:12px}
+#opening #typed.off,#opening #sub.off{opacity:0}
+#opening #typed:empty::after,#opening #sub:empty::after{display:none}
+#opening #typed::after,#opening #sub::after{content:'█';animation:op-blink .6s steps(2) infinite}
+@keyframes op-blink{50%{opacity:0}}
+#opening #prompt{position:fixed;left:50%;bottom:calc(30px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);font:10px 'Press Start 2P',monospace;color:var(--gold);text-shadow:2px 2px 0 #000;opacity:0;transition:opacity .8s;pointer-events:none;white-space:nowrap}
+#opening #prompt.on{opacity:1}
+#opening #prompt span{animation:op-blink 1s steps(2) infinite}
+#opening #introui{position:fixed;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));display:none;align-items:center;gap:10px;color:var(--dim);font-size:16px}
+#opening.intro #introui{display:flex}
+#opening #skip{font:16px 'VT323',monospace;color:var(--gold);background:rgba(0,0,0,.5);border:2px solid var(--gold);padding:0 8px;cursor:pointer}
+#opening #skip:focus-visible{outline:2px solid #fff}
+#opening #help{transition:opacity .8s}
+#opening.intro #help{opacity:0;pointer-events:none}
+@media(max-width:640px){#opening #prompt{bottom:calc(110px + env(safe-area-inset-bottom,0px))}}
+/* ---- Section 1 / Section 2 ---- */
+#opening #c{transition:filter 1.2s}
+#opening #hint{left:12px;width:200px;pointer-events:none}
+#opening #hint.hid{opacity:0;transform:translateX(-14px)}
+#opening #hint p{margin:0;font:10px/1.7 'Press Start 2P',monospace;color:var(--gold)}
+#opening .opt{display:block;width:100%;text-align:left;font:18px 'VT323',monospace;color:var(--ink);background:rgba(0,0,0,.4);border:2px solid rgba(111,208,255,.4);padding:3px 8px;margin:6px 0;cursor:pointer}
+#opening .opt:hover,#opening .opt.on{border-color:var(--gold);color:var(--gold)}
+#opening .opt:focus-visible,#opening #back:focus-visible{outline:2px solid #fff}
+#opening #go{position:sticky;bottom:0;margin-top:12px;text-align:center;color:var(--gold);border-color:var(--gold);background:rgba(8,18,44,.85)}
+#opening .big{display:block;font:11px/1.5 'Press Start 2P',monospace}
+#opening #back{position:fixed;left:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));display:none;font:18px 'VT323',monospace;color:var(--gold);background:rgba(0,0,0,.55);border:2px solid var(--gold);padding:2px 12px;cursor:pointer}
+#opening.s2 #back{display:block}
+#opening.s2 #c{pointer-events:none}
+#opening.s2 #help{opacity:0;pointer-events:none}
+@media(max-width:640px){#opening #hint{width:130px}}
+/* ---- Section 2: surface view ---- */
+#opening #go:disabled,#opening #start:disabled{color:var(--dim);border-color:var(--dim);cursor:not-allowed}
+#opening.s2 #back{display:block;top:calc(12px + env(safe-area-inset-top,0px));bottom:auto;left:12px}
+#opening #surf{display:none;position:fixed;left:calc(50% - 30px);top:50%;--ms:min(62vh,520px,max(220px,calc(100vw - 640px)));width:var(--ms);height:var(--ms);margin:calc(var(--ms)/-2) 0 0 calc(var(--ms)/-2);z-index:2}
+#opening.s2 #surf{display:block}
+#opening #surf.fly{transition:transform 1.6s cubic-bezier(.25,.6,.2,1)}
+#opening #win{position:absolute;inset:0}
+#opening #stage{position:absolute;inset:0}
+#opening #stage::before{content:'';position:absolute;inset:3%;border-radius:50%;box-shadow:0 0 18px 2px rgba(170,200,255,.25)}
+#opening #stage canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated}
+#opening #big{clip-path:inset(0 49.8% 0 0)}
+#opening #big2{clip-path:inset(0 0 0 50%)}
+#opening #core,#opening #ice{opacity:0}
+/* hover effects: transitions exist only on the active state, so leaving the hotspot resets instantly */
+#opening #surf.split #stage{transform:scale(.72);transition:transform 1s cubic-bezier(.3,.7,.2,1)}
+#opening #surf.split #big{transform:translateX(-52%);transition:transform 1s cubic-bezier(.3,.7,.2,1)}
+#opening #surf.split #big2{transform:translateX(52%);transition:transform 1s cubic-bezier(.3,.7,.2,1)}
+#opening #surf.split #core{opacity:1;transition:opacity .5s steps(5) .2s}
+#opening #surf.zin #win{overflow:hidden;border-radius:50%;box-shadow:0 0 0 3px rgba(111,208,255,.6)}
+#opening #surf.zn #stage{transform-origin:50% 8%}
+#opening #surf.zs #stage{transform-origin:50% 92%}
+#opening #surf.zin #stage{transform:scale(2.4);transition:transform .8s cubic-bezier(.3,.7,.2,1)}
+#opening #surf.zin #ice{opacity:1;transition:opacity .4s steps(4) .5s;animation:op-spark 1s steps(2) infinite}
+@keyframes op-spark{50%{filter:brightness(1.25)}}
+#opening #surf.fxon .hot:not(.hv){opacity:0;pointer-events:none}
+#opening #lg{position:absolute;left:50%;top:calc(100% + 12px);transform:translateX(-50%);display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px 14px;width:max(100%,420px);max-width:max(200px,calc(100vw - 580px));font:17px 'VT323',monospace;text-shadow:2px 2px 0 #000;opacity:0;pointer-events:none}
+#opening.fx #lg{opacity:1}
+#opening #lg i{display:inline-block;width:12px;height:12px;margin-right:5px;vertical-align:-1px}
+#opening #lg em{color:var(--dim);font-style:normal;font-size:15px}
+#opening #hs{position:absolute;inset:0}
+#opening .hot{position:absolute;transform:translate(-50%,-50%);width:26px;height:26px;padding:0;margin:0;border:0;background:none;font:inherit;color:inherit;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .5s steps(5)}
+#opening #surf.ready .hot{opacity:1;pointer-events:auto}
+#opening .mk{--c:#ff4b4b;--f:0%;position:absolute;inset:0;border:3px solid var(--c);background:linear-gradient(to top,var(--c) var(--f),rgba(0,0,0,.3) var(--f));animation:op-pulse 1.2s steps(2) infinite}
+#opening .mk.s2{--c:#4be06a;--f:100%;animation:none}
+@keyframes op-pulse{50%{box-shadow:0 0 0 4px var(--c)}}
+#opening .hl{position:absolute;left:34px;top:3px;pointer-events:none;white-space:nowrap;font:17px 'VT323',monospace;color:#fff;text-shadow:2px 2px 0 #000,0 0 6px #000}
+#opening .hq{display:none;position:absolute;left:26px;top:-8px;width:220px;padding:8px 10px;text-align:left;font:17px/1.15 'VT323',monospace;color:var(--ink);background:rgba(8,18,44,.92);box-shadow:0 -2px 0 0 var(--fr),0 2px 0 0 var(--fr),-2px 0 0 0 var(--fr),2px 0 0 0 var(--fr)}
+#opening .hq.up{top:auto;bottom:-8px}
+#opening .hq .nd{display:block;margin:4px 0 6px;color:#ffe9a0}
+#opening .hq .nt{display:block;font-size:15px}
+#opening .hot:hover,#opening .hot:focus-visible{z-index:4}
+#opening .hot:hover .hq,#opening .hot:focus-visible .hq{display:block}
+#opening .hot:hover .hl,#opening .hot:focus-visible .hl{visibility:hidden}
+#opening .hot:focus-visible{outline:2px solid #fff}
+/* side columns */
+#opening .col{position:fixed;top:calc(92px + env(safe-area-inset-top,0px));bottom:calc(70px + env(safe-area-inset-bottom,0px));display:none;flex-direction:column;gap:12px;overflow-y:auto;overflow-x:hidden;padding:4px;scrollbar-width:thin;z-index:3}
+#opening.s2 .col{display:flex;animation:op-fi .6s steps(6)}
+@keyframes op-fi{from{opacity:0}}
+#opening #lcol{left:8px;width:238px}
+#opening #rcol{right:8px;width:306px}
+#opening #gimg,#opening #mimg,#opening #mn{display:none}
+#opening #mn.show{display:block;animation:op-fi .4s steps(4)}
+#opening.fg #gimg,#opening.fm #mimg{display:block;animation:op-fi .4s steps(4)}
+#opening .col .panel{position:static;width:auto;flex:none}
+#opening #st{white-space:pre-line;margin:0;font:19px/1.2 'VT323',monospace;color:var(--ink);min-height:6.2em}
+#opening #gm{display:block;width:100%;height:auto;box-shadow:0 0 0 2px rgba(111,208,255,.5)}
+#opening .cap{margin:6px 0 0;font-size:15px}
+#opening .tl{margin:0;padding:0;list-style:none}
+#opening .tl li::before{content:'';display:inline-block;width:8px;height:8px;background:#4be06a;margin-right:8px}
+#opening .gauge{display:flex;gap:2px;padding:3px;border:2px solid rgba(111,208,255,.5);background:rgba(0,0,0,.4)}
+#opening .gauge i{flex:1;height:16px;background:rgba(255,255,255,.08);transition:background .3s steps(3)}
+#opening .gauge i.on{background:var(--c)}
+#opening .ge{display:flex;justify-content:space-between;font-size:15px;color:var(--dim);margin-top:3px}
+#opening .gl{margin:4px 0 0}
+#opening #mi{display:flex;align-items:flex-end;gap:8px;flex-wrap:wrap}
+#opening .mn{display:flex;flex-direction:column;align-items:center;font-size:16px;line-height:1.05}
+#opening .chip{display:block;margin-bottom:3px}
+#opening .chip.b{box-shadow:inset 2px 2px 0 rgba(255,255,255,.35),inset -2px -2px 0 rgba(0,0,0,.35)}
+#opening #start{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:none;font:20px 'VT323',monospace;color:var(--gold);background:rgba(0,0,0,.6);border:2px solid var(--gold);padding:4px 24px;cursor:pointer;z-index:4}
+#opening.s2 #start{display:block}
+#opening #start:focus-visible{outline:2px solid #fff}
+#opening #mpop{left:50%;top:50%;width:min(430px,92vw);max-height:80vh;overflow:auto;scrollbar-width:thin;transform:translate(-50%,-50%);z-index:6;background:rgba(8,18,44,.96)}
+#opening #mpop.hid{opacity:0;pointer-events:none;transform:translate(-50%,-50%) scale(.92)}
+#opening #mx{position:absolute;right:8px;top:6px;width:26px;height:26px;padding:0;font:20px/1 'VT323',monospace;color:var(--gold);background:none;border:2px solid var(--gold);cursor:pointer}
+#opening #mx:focus-visible{outline:2px solid #fff}
+@media(max-width:900px){#opening #lcol{width:150px}
+#opening #rcol{width:200px}
+#opening #surf{left:50%}
+#opening #lg{max-width:max(160px,calc(100vw - 440px))}}
+/* ---- mission brief (moved out of the Moon area), states, incoming markers ---- */
+#opening #bb p{margin:4px 0}
+#opening #bb .nd{color:#ffe9a0}
+#opening .tag{display:inline-block;margin-left:6px;padding:0 6px;font-size:15px;border:2px solid currentColor;vertical-align:1px}
+#opening .tag.act{color:#4be06a}
+#opening .tag.pas{color:#6fd0ff}
+#opening .tag.inc{color:#ffb454}
+#opening .hot.inc .mk{--c:#8a96a8;border-style:dashed;animation:none}
+
+
+/* opening container + guards against hangar-wide rules */
+#opening{position:fixed;inset:0;z-index:50;height:auto;padding:0}
+#opening.hidden{display:none!important}
+#opening .chip{position:static;display:block;gap:0;border:0;padding:0;font-size:inherit;cursor:default;transition:none}
+#opening button{font-family:'VT323',monospace}
+#opening #toHangar{text-align:center;color:var(--gold);border-color:var(--gold);margin-top:12px;font-size:20px}
+
+#opening #modeRow{display:flex;gap:8px}
+#opening #modeRow .mode{flex:1;margin:4px 0;text-align:left}
+#opening #modeRow .mode b{display:block;font:9px 'Press Start 2P',monospace;margin:2px 0 4px}
+#opening #modeRow .mode span{display:block;font-size:16px;line-height:1.05;color:var(--dim)}
+#opening #modeRow .mode.on span{color:var(--ink)}
+#opening #mpop h3{margin-top:10px}
