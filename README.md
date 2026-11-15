@@ -6,7 +6,7 @@ A browser game where you plan and fly a NASA-style science mission to the Moon, 
 
 Built for **NASA Space Apps Challenge 2026 – Ho Chi Minh City**.
 
-Plain HTML, CSS and JavaScript. No frameworks, no install, no dependencies.
+Plain HTML, CSS and JavaScript.
 
 ## How the game works
 
